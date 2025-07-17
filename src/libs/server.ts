@@ -1,21 +1,18 @@
-const url:string = "wss://localhost:3001"
+import { WebSocketServer, WebSocket } from 'ws'
 
+const port: number = 3001
+const wss = new WebSocketServer({port: port})
 
-const server = new WebSocket(url)
-
-server.onopen = () => {
-	console.log("someone connected to server")
-}
-
-server.onmessage = (event) => {
-	console.log('onmessage event',event.data)
-}
-
-server.onclose = () => {
-	console.log("someone disconnected from server")
-}
-
-server.onerror = (event) => {
-	console.log('onerror event',event)
-}
-
+wss.on('connection', (ws: WebSocket) => {
+    console.log("someone connected to server")
+    ws.on('message', (message: Buffer) => {
+        console.log('onmessage event', message.toString())
+    })
+    ws.on('close', (code: number, reason: Buffer) => {
+        console.log("someone disconnected from server", code, reason.toString())
+    })
+    ws.on('error', (error: Error) => {
+        console.log('onerror event', error)
+    })
+    ws.send('hello from server')
+})

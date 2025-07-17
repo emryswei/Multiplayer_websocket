@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react';
+import startServer from 'libs/client'
 
 export default function CanvasSingleCircle() {
 	const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -21,6 +22,7 @@ export default function CanvasSingleCircle() {
 
 	useEffect(() => {
 		drawCircle()
+		startServer()
 	}, [])
 
 	return (
